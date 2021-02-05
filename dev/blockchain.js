@@ -2,6 +2,8 @@
 //Start Date: 2/5/2021
 //Building My First Blockchain
 
+const sha256 = require('sha256');
+
 //Blockchain constructor function
 function Blockchain(){
   this.chain = [];//all created/mined blocks stored here
@@ -53,5 +55,20 @@ Blockchain.prototype.createNewTransaction = function(amount, sender, recipient) 
 
   return this.getLastBlock()['index'] + 1; //return index of new block (last block in chain)
 }
+
+//method: hashBlock SHA256 cryptographic hashing function
+//returns seemingly random hash with fixed length
+Blockchain.prototype.hashBlock = function(previousBlockHash, currentBlockData, nonce) {
+  //concat all input data as string
+  const dataAsString = previousBlockHash + nonce.toString() + JSON.stringify(currentBlockData);
+  //hash input data
+  const hash = sha256(dataAsString);
+
+  return hash;
+}
+
+
+
+
 
 module.exports = Blockchain; //export Blockchain constructor for testing in test.js

@@ -2,10 +2,19 @@ const Blockchain = require('./blockchain.js');
 
 const gitcoin = new Blockchain();
 
-gitcoin.createNewBlock(1234, 'ALKJSDF2384', 'AHASFDHGASDFHG87');
+const previousBlockHash = 'PIWY312YROIPUEP89UER';
+const currentBlockData = [
+  {
+    amount: 10,
+    sender: 'PQOWIER9382R3',
+    recipient: 'POI3U2983QORE'
+  },
+  {
+    amount: 30,
+    sender: 'NALCDJSNACKJSA',
+    recipient: 'OPIUPOIWQ'
+  }
+];
+const nonce = 100;
 
-gitcoin.createNewTransaction(100, 'ALEXFAJHSDFL', 'JENNTYVJRKJHB');
-
-gitcoin.createNewBlock(12367, 'QPWIEYROQIW', 'F9823098JR4F');
-
-console.log(gitcoin.chain[1]);
+console.log(gitcoin.hashBlock(previousBlockHash, currentBlockData, nonce));
