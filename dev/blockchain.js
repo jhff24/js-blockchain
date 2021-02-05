@@ -8,7 +8,10 @@ const sha256 = require('sha256');
 function Blockchain(){
   this.chain = [];//all created/mined blocks stored here
   this.pendingTransactions = [];//hold all pending transactions before they are placed into a new block
-}
+
+  //Genesis block. Arbitrary inputs for creating our first block
+  this.createNewBlock(100, '0', '0');
+};
 /*Alternative:
 class Blockchain {
   constructor() {
@@ -35,12 +38,12 @@ Blockchain.prototype.createNewBlock = function(nonce, previousBlockHash, hash){
   this.chain.push(newBlock); //push new block to blockchain
 
   return newBlock;
-}
+};
 
 //method:getLastBlock returns the last block in the chain
 Blockchain.prototype.getLastBlock = function() {
   return this.chain[this.chain.length - 1];
-}
+};
 
 //method:createNewTransaction creates a new transaction
 Blockchain.prototype.createNewTransaction = function(amount, sender, recipient) {
@@ -54,7 +57,7 @@ Blockchain.prototype.createNewTransaction = function(amount, sender, recipient) 
   this.pendingTransactions.push(newTransaction);
 
   return this.getLastBlock()['index'] + 1; //return index of new block (last block in chain)
-}
+};
 
 //method: hashBlock SHA256 cryptographic hashing function
 //returns seemingly random hash with fixed length
@@ -65,8 +68,29 @@ Blockchain.prototype.hashBlock = function(previousBlockHash, currentBlockData, n
   const hash = sha256(dataAsString);
 
   return hash;
-}
+};
 
+/*NOTES ON PROOF OF WORK:
+-want to make sure that every block added to chain has the correct data and newTransactions
+-we do this by mining it through proof of work
+repeatedly run hashBlock method (changing nonce each time) until you get the correct output
+**(correct output is a hash that starts with 4 zeroes)**
+returns the nonce value that creates the correct hash
+KEY: since previousBlockHash is part of the input, one would need to recreate each block successively
+in order to "fake" the whole chain
+that's an insane amount of computing, aka lots of "work"
+*/
+
+Blockchain.prototype.proofOfWork = function(previousBlockHash, currentBlockData) {
+  let nonce = 0;
+  let hash = this.hashBlock(previousBlockHash, currentBlockData, nonce);
+  while (hash.substring(0, 4) !== '0000') {
+    nonce++
+    hash = this.hashBlock(previousBlockHash, currentBlockData, nonce);
+    // console.log(hash); //USE FOR TESTING
+  }
+  return nonce;
+};
 
 
 
