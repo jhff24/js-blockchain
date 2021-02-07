@@ -1,5 +1,5 @@
 //John Henry Fitzgerald
-//Start Date: 2/5/2021
+//Date: 2/5/2021
 //Building My First Blockchain
 
 const sha256 = require('sha256');
