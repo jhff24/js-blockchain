@@ -3,11 +3,16 @@
 //Building My First Blockchain
 
 const sha256 = require('sha256');
+const currentNodeUrl = process.argv[3]; //pulls node URL from package.json
+
 
 //Blockchain constructor function
 function Blockchain(){
   this.chain = [];//all created/mined blocks stored here
   this.pendingTransactions = [];//hold all pending transactions before they are placed into a new block
+
+  this.currentNodeUrl = currentNodeUrl;
+  this.networkNodes = []; //fill with URLs of all other nodes in network
 
   //Genesis block. Arbitrary inputs for creating our first block
   this.createNewBlock(100, '0', '0');
