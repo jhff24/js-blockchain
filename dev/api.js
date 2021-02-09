@@ -22,13 +22,24 @@ app.get('/blockchain', function (req, res) {
 
 //create new transaction when hit
 app.post('/transaction', function(req, res){
-  console.log(req.body);
-  res.send(`The amount  of the transaction is ${req.body.amount} gitcoin.`);
+  const blockIndex = gitcoin.createNewTransaction(req.body.amount, req.body.sender, req.body.recipient);
+  res.json({ note: `Transaction will be added in block ${blockIndex}`});
 });
 
 //create a new block when hit
 app.get('/mine', function(req, res){
+  const lastBlock = gitcoin.getLastBlock();
+  const previousBlockHash = lastBlock['hash'];
+  const currentBlockData = {
+    transactions: gitcoin.pendingTransactions;
+    index: lastBlock['index'] + 1;
+  };
 
+  const nonce = gitcoin.proofOfWork(previousBlockHash, currentBlockData);
+
+  const blockHash = gitcoin.hashBlock(previousBlockHash, currentBlockData, nonce);
+
+  const newBlock = gitcoin.createNewBlock(nonce, previousBlockHash, blockHash);
 });
 
 //localhost:3000
