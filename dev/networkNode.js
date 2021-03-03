@@ -91,7 +91,7 @@ app.post('/register-node', function(req, res) {
     const nodeNotAlreadyPresent = gitcoin.networkNodes.indexOf(newNodeUrl) == -1;
     const notCurrentNode = gitcoin.currentNodeUrl !== newNodeUrl;
     if (nodeNotAlreadyPresent && notCurrentNode) gitcoin.networkNodes.push(newNodeUrl);//register new node with node we are currently on by adding to its networkNodes array
-    res.json({ note: 'New node registered successfully with node.' });
+    res.json({ note: 'New node registered successfully.' });
 });
 
 //register multiple nodes at once
