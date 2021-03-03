@@ -66,7 +66,7 @@ app.post('/register-and-broadcast-node', function(req, res) {
       json: true
     };
 
-    regNodesPromises.push(rp(requestOptions));
+    regNodesPromises.push(rp(requestOptions));//push each node to the regNodePromises array 
   });
 
   Promise.all(regNodePromises).then(data => {
