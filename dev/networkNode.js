@@ -66,7 +66,7 @@ app.post('/register-and-broadcast-node', function(req, res) {
       json: true
     };
 
-    regNodesPromises.push(rp(requestOptions));//push each node to the regNodePromises array 
+    regNodesPromises.push(rp(requestOptions));//push each node to the regNodePromises array
   });
 
   Promise.all(regNodePromises).then(data => {
@@ -87,7 +87,11 @@ app.post('/register-and-broadcast-node', function(req, res) {
 //register a node with the network
 //a.k.a. existing node uses this to accept a newly broadcasted node
 app.post('/register-node', function(req, res) {
-
+    const newNodeUrl = req.body.newNodeUrl;
+    const nodeNotAlreadyPresent = gitcoin.networkNodes.indexOf(newNodeUrl) == -1;
+    const notCurrentNode = gitcoin.currentNodeUrl !== newNodeUrl;
+    if (nodeNotAlreadyPresent && notCurrentNode) gitcoin.networkNodes.push(newNodeUrl);//register new node with node we are currently on by adding to its networkNodes array
+    res.json({ note: 'New node registered successfully with node.' });
 });
 
 //register multiple nodes at once
